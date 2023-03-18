@@ -112,6 +112,7 @@ public class FrontControllerServlet extends HttpServlet {
         // contextPath  = /a or "/" or ""
         String servletContextPath = request.getContextPath();
         String prefixPath = servletContextPath;
+        System.out.println("request.getContextPath():"+prefixPath);
         // 映射路径（子路径）
         String requestMappingPath = substringAfter(requestURI,
                 StringUtils.replace(prefixPath, "//", "/"));
@@ -136,6 +137,8 @@ public class FrontControllerServlet extends HttpServlet {
                     if (controller instanceof PageController) {
                         PageController pageController = PageController.class.cast(controller);
                         String viewPath = pageController.execute(request, response);
+                        System.out.println("pageController.execute(request, response):"+viewPath);
+
                         // 页面请求 forward
                         // request -> RequestDispatcher forward
                         // RequestDispatcher requestDispatcher = request.getRequestDispatcher(viewPath);

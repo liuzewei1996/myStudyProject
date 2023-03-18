@@ -60,13 +60,16 @@ public class DBConnectionManager {
 //        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
 //        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
 
-        String databaseURL = "jdbc:derby:/db/user-platform;create=true";
+        String databaseURL = "jdbc:derby:db/user-platform;create=true";
         Connection connection = DriverManager.getConnection(databaseURL);
-
+//connect ‘jdbc:derby:/Users/liuzw/Desktop/study/software/db/user/user-platform;create=true’;
+        ///Users/liuzw/Desktop/study/software/db/user
+        //java org.apache.derby.tools.ij
+        //java -jar $DERBY_HOME/lib/derbyrun.jar server start
+        //    /Users/Shared/project/db
         Statement statement = connection.createStatement();
         // 删除 users 表
         System.out.println(statement.execute(DROP_USERS_TABLE_DDL_SQL)); // false
-        // 创建 users 表
         System.out.println(statement.execute(CREATE_USERS_TABLE_DDL_SQL)); // false
         System.out.println(statement.executeUpdate(INSERT_USER_DML_SQL));  // 5
 
@@ -84,6 +87,7 @@ public class DBConnectionManager {
 
         // 写一个简单的 ORM 框架
         while (resultSet.next()) { // 如果存在并且游标滚动
+            //使用 new 类没有问题
             User user = new User();
 
             // ResultSetMetaData 元信息
