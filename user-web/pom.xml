@@ -39,15 +39,37 @@
             <artifactId>derby</artifactId>
         </dependency>
 
+        <!-- Hibernate ORM Core -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+        </dependency>
+
+        <!-- Hibernate ORM JPA -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
             <!-- Tomcat Maven 插件用于构建可执行 war -->
+            <!-- Tomcat 7.x 官方文档：
+http://tomcat.apache.org/tomcat-7.0-doc/index.html
+-->
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.1</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.derby</groupId>
+                        <artifactId>derby</artifactId>
+                        <version>${derby.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>tomcat-run</id>

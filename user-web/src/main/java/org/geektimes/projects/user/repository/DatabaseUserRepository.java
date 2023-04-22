@@ -1,6 +1,7 @@
 package org.geektimes.projects.user.repository;
 
 import org.geektimes.function.ThrowableFunction;
+import org.geektimes.projects.user.context.ComponentContext;
 import org.geektimes.projects.user.domain.User;
 import org.geektimes.projects.user.sql.DBConnectionManager;
 
@@ -33,8 +34,9 @@ public class DatabaseUserRepository implements UserRepository {
 
     private final DBConnectionManager dbConnectionManager;
 
-    public DatabaseUserRepository(DBConnectionManager dbConnectionManager) {
-        this.dbConnectionManager = dbConnectionManager;
+    public DatabaseUserRepository() {
+        this.dbConnectionManager = ComponentContext.getInstance()
+                .getComponent("bean/DBConnectionManager");
     }
 
     private Connection getConnection() {
@@ -100,6 +102,11 @@ public class DatabaseUserRepository implements UserRepository {
             // 异常处理
         });
     }
+
+//    实现一个快速排序算法
+
+
+
 
     /**
      * @param sql
