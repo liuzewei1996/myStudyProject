@@ -1,13 +1,13 @@
 package org.geektimes.projects.user.sql;
 
-import org.geektimes.projects.user.context.ComponentContext;
 import org.geektimes.projects.user.domain.User;
 
+import javax.annotation.Resource;
+import javax.persistence.EntityManager;
 import javax.sql.DataSource;
 import java.beans.BeanInfo;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.sql.*;
 import java.util.HashMap;
@@ -16,18 +16,31 @@ import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class DBConnectionManager {
+public class DBConnectionManager {  // JNDI Component
 
     private final Logger logger = Logger.getLogger(DBConnectionManager.class.getName());
 
+    @Resource(name = "jdbc/UserPlatformDB")
+    private DataSource dataSource;
+
+    @Resource(name = "bean/EntityManager")
+    private EntityManager entityManager;
+
+
+    public EntityManager getEntityManager() {
+        logger.info("当前 EntityManager 实现类：" + entityManager.getClass().getName());
+        return this.entityManager;
+    }
+
     public Connection getConnection() {
-        ComponentContext context = ComponentContext.getInstance();
+//        ComponentContext context = ComponentContext.getInstance();
         //JDNI 依赖查找
-        DataSource dataSource = context.getComponent("jdbc/UserPlatformDB");
+//        DataSource dataSource = context.getComponent("jdbc/UserPlatformDB");
         Connection connection  = null;
         try{
             connection = dataSource.getConnection();
         } catch (SQLException e) {
+            e.printStackTrace();
             logger.log(Level.SEVERE, e.getMessage());
         }
         if(connection != null ){
@@ -69,12 +82,14 @@ public class DBConnectionManager {
 //        通过 ClassLoader 加载 java.sql.DriverManager -> static 模块 {}
 //        DriverManager.setLogWriter(new PrintWriter(System.out));
 //
-//        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+        Connection connection = null;
+        Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 //        Driver driver = DriverManager.getDriver("jdbc:derby:/db/user-platform;create=true");
-//        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
+        //        Connection connection = driver.connect("jdbc:derby:/db/user-platform;create=true", new Properties());
+        connection = DriverManager.getConnection("jdbc:derby:/Users/Shared/project/db/user-platform;create=true", new Properties());
 
         String databaseURL = "jdbc:derby:db/user-platform;create=true";
-        Connection connection = DriverManager.getConnection(databaseURL);
+//        connection = DriverManager.getConnection(databaseURL);
 //connect ‘jdbc:derby:/Users/liuzw/Desktop/study/software/db/user/user-platform;create=true’;
         ///Users/liuzw/Desktop/study/software/db/user
         //java org.apache.derby.tools.ij

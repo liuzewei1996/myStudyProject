@@ -1,6 +1,11 @@
 package org.geektimes.projects.user.domain;
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import java.io.Serializable;
 import java.util.Objects;
 
 import static javax.persistence.GenerationType.AUTO;
@@ -12,14 +17,17 @@ import static javax.persistence.GenerationType.AUTO;
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = AUTO)
+    @NotNull
     private Long id;
     @Column
     private String name;
     @Column
+//    @Max(32)
+//    @Min(6)
     private String password;
     @Column
     private String email;
